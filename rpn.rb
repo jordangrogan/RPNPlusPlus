@@ -25,7 +25,7 @@ class RPN
 
   def print_op(arr)
     if(arr.size == 1)
-      print arr
+      puts arr[0]
     else
       arr.each do |token|
         @call_stack.push(token)
