@@ -36,7 +36,7 @@ class RPNExecutor
         @call_stack.push(token)
       end
 
-      calculate
+      puts calculate
 
     end
   end
@@ -61,6 +61,12 @@ class RPNExecutor
     return false
   end
 
+  def is_number?(token)
+    return true if token == '0' # token string is 0
+    return false if token.to_i == 0 # to_i will return 0 if it's not a number
+    return true
+  end
+
   def calculate
     operator = @call_stack.pop
     if operator == '+'
@@ -79,8 +85,20 @@ class RPNExecutor
     operand2 = @call_stack.pop
 
     # Check to see if operands are numbers, if they are not, check if they are variables, if they are not, throw error
-    operand1 = operand1.to_i
-    operand2 = operand2.to_i
+    if is_number?(operand1)
+      operand1 = operand1.to_i
+    elsif @variables.key?(operand1)
+      operand1 = @variables[operand1].to_i
+    else
+      # throw error!
+    end
+    if is_number?(operand2)
+      operand2 = operand2.to_i
+    elsif @variables.key?(operand2)
+      operand2 = @variables[operand2].to_i
+    else
+      # throw error!
+    end
 
     operand1 + operand2
   end
