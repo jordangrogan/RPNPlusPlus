@@ -1,5 +1,7 @@
 require_relative 'rpn_executor'
 
+trap "SIGINT" do exit end # Handle quitting with control-C gracefully
+
 rpn = RPNExecutor.new
 
 if ARGV.count > 0
@@ -16,7 +18,7 @@ else
 
   loop do
     print '> '
-    rpn.execute(gets.chomp.upcase)
+    puts rpn.execute(gets.chomp.upcase)
   end
 
 end

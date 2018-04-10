@@ -11,15 +11,16 @@ class RPNExecutor
     unless tokens.empty?
 
       if tokens[0] == 'LET'
-        @variables[tokens[1]] = tokens[2]
-      end
-
-      if tokens[0] == 'PRINT'
+        let_op(tokens[1, tokens.length])
+      elsif tokens[0] == 'PRINT'
         print_op(tokens[1, tokens.length])
-      end
-
-      if tokens[0] == 'QUIT'
+      elsif tokens[0] == 'QUIT'
         exit
+      else
+        tokens.each do |token|
+          @call_stack.push(token)
+        end
+        calculate
       end
 
     end
@@ -36,5 +37,82 @@ class RPNExecutor
         puts @variables[@call_stack.pop].to_i + @variables[@call_stack.pop].to_i
       end
     end
+  end
+
+  def let_op(arr)
+    arr.each do |token|
+      @call_stack.push(token)
+    end
+
+    if(is_operator?(@call_stack.last))
+      value = calculate
+    else
+      value = @call_stack.pop
+    end
+
+    variable_name = @call_stack.pop
+    @variables[variable_name] = value
+  end
+
+  def is_operator?(token)
+    return true if token == '+' || token == '-' || token == '/' || token == '*'
+    return false
+  end
+
+  def calculate
+    operator = @call_stack.pop
+    if operator == '+'
+      add_op
+    elsif operator == '-'
+      subt_op
+    elsif operator == '*'
+      mult_op
+    elsif operator == '/'
+      div_op
+    end
+  end
+
+  def add_op
+    operand1 = @call_stack.pop
+    operand2 = @call_stack.pop
+
+    # Check to see if operands are numbers, if they are not, check if they are variables, if they are not, throw error
+    operand1 = operand1.to_i
+    operand2 = operand2.to_i
+
+    operand1 + operand2
+  end
+
+  def subt_op
+    operand1 = @call_stack.pop
+    operand2 = @call_stack.pop
+
+    # Check to see if operands are numbers, if they are not, check if they are variables, if they are not, throw error
+    operand1 = operand1.to_i
+    operand2 = operand2.to_i
+
+    operand2 - operand1
+  end
+
+  def mult_op
+    operand1 = @call_stack.pop
+    operand2 = @call_stack.pop
+
+    # Check to see if operands are numbers, if they are not, check if they are variables, if they are not, throw error
+    operand1 = operand1.to_i
+    operand2 = operand2.to_i
+
+    operand1 * operand2
+  end
+
+  def div_op
+    operand1 = @call_stack.pop
+    operand2 = @call_stack.pop
+
+    # Check to see if operands are numbers, if they are not, check if they are variables, if they are not, throw error
+    operand1 = operand1.to_i
+    operand2 = operand2.to_i
+
+    operand2 / operand1
   end
 end
