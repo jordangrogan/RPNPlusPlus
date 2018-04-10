@@ -27,15 +27,17 @@ class RPNExecutor
   end
 
   def print_op(arr)
+
     if arr.size == 1
       puts arr[0]
     else
+
       arr.each do |token|
         @call_stack.push(token)
       end
-      if @call_stack.pop == '+'
-        puts @variables[@call_stack.pop].to_i + @variables[@call_stack.pop].to_i
-      end
+
+      calculate
+
     end
   end
 
