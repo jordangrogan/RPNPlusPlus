@@ -15,49 +15,38 @@ class RPNExecutor
     unless tokens.empty?
 
       if tokens[0] == 'LET'
-        let_op(tokens[1, tokens.length])
+        let_op(stack)
       elsif tokens[0] == 'PRINT'
-        print_op(tokens[1, tokens.length])
+        print_op(stack)
       elsif tokens[0] == 'QUIT'
-        exit # bad, will affect testing code
+        "QUIT"
       else
-        tokens.each do |token|
-          @call_stack.push(token)
-        end
-        calculate
+        calculate(stack)
       end
 
     end
   end
 
-  def print_op(arr)
+  def print_op(stack)
 
     if arr.size == 1
       puts arr[0]
     else
 
-      arr.each do |token|
-        @call_stack.push(token)
-      end
-
-      puts calculate
+    puts calculate
 
     end
   end
 
-  def let_op(arr)
-    arr.each do |token|
-      @call_stack.push(token)
-    end
-
-    if(is_operator?(@call_stack.last))
-      value = calculate
+  def let_op(stack)
+    if(is_operator?(stack.peak))
+      value = calculate(stack)
     else
-      value = @call_stack.pop
+      value = stack.pop
     end
 
-    variable_name = @call_stack.pop
-    @variables[variable_name] = value
+    variable_name = stack.pop
+    stack[variable_name] = value
   end
 
   def is_operator?(token)
@@ -71,10 +60,19 @@ class RPNExecutor
     return true
   end
 
-  def calculate
-    operator = @call_stack.pop
+  def calculate(stack)
+    operator = stack.pop
+    operand1 = stack.pop
+    operand2 = stack.pop
+
+    operand1 = @variables.check_for_variable(operand1)
+    return if operand1.is_a?(Error)
+
+    operand2 = @variables.check_for_variable(operand2)
+    return if operand2.is_a?(Error)
+
     if operator == '+'
-      add_op
+      add_op(stack)
     elsif operator == '-'
       subt_op
     elsif operator == '*'
@@ -84,19 +82,14 @@ class RPNExecutor
     end
   end
 
-  def add_op
-    operand1 = @call_stack.pop
-    operand2 = @call_stack.pop
+  def add_op(stack)
+    operand1 = stack.pop
+    operand2 = stack.pop
 
     # Check to see if operands are numbers, if they are not, check if they are variables, if they are not, throw error
-    if is_number?(operand1)
-      operand1 = operand1.to_i
-    elsif @variables.key?(operand1)
-      operand1 = @variables[operand1].to_i
-    else
-      print "Variable #{operand1} is not initialized"
-      return
-    end
+    operand1 = @variables.check_for_variable(operand1)
+    return if operand1.is_a?(Error)
+
     if is_number?(operand2)
       operand2 = operand2.to_i
     elsif @variables.variable_exist?(operand2)

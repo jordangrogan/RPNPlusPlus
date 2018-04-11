@@ -16,4 +16,14 @@ class VariableList
     @variables[name]
   end
 
+  def check_for_variable(value)
+    if is_number?(value)
+      return value.to_i
+    elsif @variables.key?(value)
+      return @variables[value].to_i
+    else
+      return Error.new "Variable #{value} is not initialized"
+    end
+  end
+
 end

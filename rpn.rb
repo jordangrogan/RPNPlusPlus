@@ -15,15 +15,18 @@ if ARGV.count > 0
         else
           value
         end
+        break if value == "QUIT"
       end
     end
 
 else
   # REPL mode
 
-  loop do
+  value = nil;
+  while(value != "QUIT")
     print '> '
-    puts rpn.execute(gets.chomp.upcase)
+    value = rpn.execute(gets.chomp.upcase)
+    puts value if value != "QUIT"
   end
 
 end
