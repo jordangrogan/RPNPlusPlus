@@ -1,11 +1,15 @@
 # Class for RPN programming language
 class RPNExecutor
   def initialize
-    @call_stack = []
-    @variables = {}
+    @variables = VariableList.new
   end
 
   def execute(line)
+
+    stack = LineStack.new(line)
+    error = stack.check_syntax_errors
+    return error unless error.is_nil?
+
     tokens = line.split(' ')
 
     unless tokens.empty?
@@ -95,7 +99,7 @@ class RPNExecutor
     end
     if is_number?(operand2)
       operand2 = operand2.to_i
-    elsif @variables.key?(operand2)
+    elsif @variables.variable_exist?(operand2)
       operand2 = @variables[operand2].to_i
     else
       print "Variable #{operand2} is not initialized"

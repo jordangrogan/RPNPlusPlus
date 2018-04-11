@@ -9,7 +9,12 @@ if ARGV.count > 0
 
     ARGV.each do |file|
       File.open(file, 'r').each_line do |line|
-        rpn.execute(line.upcase)
+        value = rpn.execute(line.upcase)
+        if(value).is_a?(Error)
+          puts "Line #{i}: #{value.print_error}"
+        else
+          value
+        end
       end
     end
 
