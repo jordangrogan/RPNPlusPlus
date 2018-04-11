@@ -1,6 +1,6 @@
 require 'minitest/autorun'
 
-require_relative 'line_stack'
+require_relative 'error'
 
 class ErrorTest < Minitest::Test
 
