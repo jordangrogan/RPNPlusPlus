@@ -7,16 +7,18 @@ rpn = RPNExecutor.new
 if ARGV.count > 0
   # File mode
 
+    value = nil
     ARGV.each do |file|
       File.open(file, 'r').each_line do |line|
         value = rpn.execute(line.upcase)
         if(value).is_a?(Error)
-          puts "Line #{i}: #{value.print_error}"
+          puts "Line #{i}: #{value.error_message}"
         else
           value
         end
         break if value == "QUIT"
       end
+      break if value == "QUIT"
     end
 
 else

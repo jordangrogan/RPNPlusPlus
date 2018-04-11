@@ -1,3 +1,7 @@
+require_relative 'variable_list'
+require_relative 'line_stack'
+require_relative 'error'
+
 # Class for RPN programming language
 class RPNExecutor
   def initialize
@@ -8,7 +12,7 @@ class RPNExecutor
 
     stack = LineStack.new(line)
     error = stack.check_syntax_errors
-    return error unless error.is_nil?
+    return error unless error.nil?
 
     tokens = line.split(' ')
 
@@ -52,12 +56,6 @@ class RPNExecutor
   def is_operator?(token)
     return true if token == '+' || token == '-' || token == '/' || token == '*'
     return false
-  end
-
-  def is_number?(token)
-    return true if token == '0' # token string is 0
-    return false if token.to_i == 0 # to_i will return 0 if it's not a number
-    return true
   end
 
   def calculate(stack)

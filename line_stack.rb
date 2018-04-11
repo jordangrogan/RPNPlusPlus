@@ -1,3 +1,5 @@
+require_relative 'error'
+
 # Class for each line's call stack
 class LineStack
   def initialize(line)
@@ -13,7 +15,7 @@ class LineStack
 
   def check_syntax_errors
     # checks for syntax errors
-    return Error.new("Here's the error")
+    # return Error.new("Here's the error")
 
     # no errors
     return nil

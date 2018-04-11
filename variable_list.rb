@@ -1,3 +1,5 @@
+require_relative 'error'
+
 # Class for the variable list
 class VariableList
   def initialize
@@ -24,6 +26,12 @@ class VariableList
     else
       return Error.new "Variable #{value} is not initialized"
     end
+  end
+
+  def is_number?(token)
+    return true if token == '0' # token string is 0
+    return false if token.to_i == 0 # to_i will return 0 if it's not a number
+    return true
   end
 
 end
