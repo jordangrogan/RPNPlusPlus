@@ -1,6 +1,6 @@
 require 'simplecov'
 SimpleCov.start
 
-require_relative 'system_test'
-#require_relative 'bar_test'
-#require_relative 'baz_test'
+require_relative 'rpn_executor_test'
+require_relative 'line_stack_test'
+require_relative 'variable_list_test'
