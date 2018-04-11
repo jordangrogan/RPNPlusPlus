@@ -72,66 +72,14 @@ class RPNExecutor
     return if operand2.is_a?(Error)
 
     if operator == '+'
-      add_op(stack)
+      operand1 + operand2
     elsif operator == '-'
-      subt_op
+      operand2 - operand1
     elsif operator == '*'
-      mult_op
+      operand1 * operand2
     elsif operator == '/'
-      div_op
+      operand2 / operand1
     end
   end
 
-  def add_op(stack)
-    operand1 = stack.pop
-    operand2 = stack.pop
-
-    # Check to see if operands are numbers, if they are not, check if they are variables, if they are not, throw error
-    operand1 = @variables.check_for_variable(operand1)
-    return if operand1.is_a?(Error)
-
-    if is_number?(operand2)
-      operand2 = operand2.to_i
-    elsif @variables.variable_exist?(operand2)
-      operand2 = @variables[operand2].to_i
-    else
-      print "Variable #{operand2} is not initialized"
-      return
-    end
-
-    operand1 + operand2
-  end
-
-  def subt_op
-    operand1 = @call_stack.pop
-    operand2 = @call_stack.pop
-
-    # Check to see if operands are numbers, if they are not, check if they are variables, if they are not, throw error
-    operand1 = operand1.to_i
-    operand2 = operand2.to_i
-
-    operand2 - operand1
-  end
-
-  def mult_op
-    operand1 = @call_stack.pop
-    operand2 = @call_stack.pop
-
-    # Check to see if operands are numbers, if they are not, check if they are variables, if they are not, throw error
-    operand1 = operand1.to_i
-    operand2 = operand2.to_i
-
-    operand1 * operand2
-  end
-
-  def div_op
-    operand1 = @call_stack.pop
-    operand2 = @call_stack.pop
-
-    # Check to see if operands are numbers, if they are not, check if they are variables, if they are not, throw error
-    operand1 = operand1.to_i
-    operand2 = operand2.to_i
-
-    operand2 / operand1
-  end
 end
