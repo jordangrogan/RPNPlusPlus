@@ -15,7 +15,7 @@ class RPNExecutor
       elsif tokens[0] == 'PRINT'
         print_op(tokens[1, tokens.length])
       elsif tokens[0] == 'QUIT'
-        exit
+        exit # bad, will affect testing code
       else
         tokens.each do |token|
           @call_stack.push(token)
@@ -90,14 +90,16 @@ class RPNExecutor
     elsif @variables.key?(operand1)
       operand1 = @variables[operand1].to_i
     else
-      # throw error!
+      print "Variable #{operand1} is not initialized"
+      return
     end
     if is_number?(operand2)
       operand2 = operand2.to_i
     elsif @variables.key?(operand2)
       operand2 = @variables[operand2].to_i
     else
-      # throw error!
+      print "Variable #{operand2} is not initialized"
+      return
     end
 
     operand1 + operand2
