@@ -1,13 +1,7 @@
-# Class for each line's call stack
-class LineStack
-  def initialize(line)
-    @stack = []
-    # add line to the line stack
-  end
+require 'minitest/autorun'
 
-  def check_errors
-    # checks for syntax errors
-    return "Syntax error"
-  end
+require_relative 'line_stack'
+
+class ErrorTest < Minitest::Test
 
 end
