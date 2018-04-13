@@ -14,10 +14,11 @@ class RPNExecutor
     unless tokens.empty?
 
       if tokens[0] == 'LET'
-        tokens.shift()
+        tokens.shift
         let_op(tokens)
       elsif tokens[0] == 'PRINT'
-        print_op(line)
+        tokens.shift
+        print_op(tokens)
       elsif tokens[0] == 'QUIT'
         "QUIT"
       else
@@ -27,22 +28,31 @@ class RPNExecutor
     end
   end
 
-  # def print_op(stack)
-  #
-  #   if arr.size == 1
-  #     puts arr[0]
-  #   else
-  #   end
-  # end
+  def print_op(tokens)
+    puts calculate(tokens)
+  end
 
   def let_op(tokens)
     variable_name = tokens.shift
-    @variables.set_variable(variable_name,calculate(tokens))
+    if is_var?(variable_name)
+      @variables.set_variable(variable_name,calculate(tokens))
+    else
+      puts "invalid variable name"
+    end
+
   end
 
   def is_operator?(token)
     return true if token == '+' || token == '-' || token == '/' || token == '*'
     return false
+  end
+
+  def is_var?(token)
+    return true if token =~ /[[:alpha:]]{1}/
+  end
+
+  def is_int?(token)
+    return true if token =~ /[0-9]*/
   end
 
   def calculate(tokens)
@@ -67,8 +77,13 @@ class RPNExecutor
           result = operand2 / operand1
         end
         stack.push(result)
-      else #assume constant operand for now
-        stack.push(token.to_i)
+      else
+        #puts "Token is #{token}"
+        if is_var?(token)
+          stack.push(@variables.get_variable(token))
+        elsif is_int?(token)
+          stack.push(token.to_i)
+        end
       end
     end
     return stack.pop
