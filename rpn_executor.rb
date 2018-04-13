@@ -14,13 +14,14 @@ class RPNExecutor
     unless tokens.empty?
 
       if tokens[0] == 'LET'
-        let_op(stack)
+        tokens.shift()
+        let_op(tokens)
       elsif tokens[0] == 'PRINT'
-        print_op(stack)
+        print_op(line)
       elsif tokens[0] == 'QUIT'
         "QUIT"
       else
-        puts calculate(line)
+        return calculate(tokens)
       end
 
     end
@@ -34,29 +35,23 @@ class RPNExecutor
   #   end
   # end
 
-  # def let_op(stack)
-  #   if(is_operator?(stack.peek))
-  #     value = calculate(stack)
-  #   else
-  #     value = stack.pop
-  #   end
-  #
-  #   variable_name = stack.pop
-  #   stack[variable_name] = value
-  # end
+  def let_op(tokens)
+    variable_name = tokens.shift
+    @variables.set_variable(variable_name,calculate(tokens))
+  end
 
   def is_operator?(token)
     return true if token == '+' || token == '-' || token == '/' || token == '*'
     return false
   end
 
-  def calculate(line)
+  def calculate(tokens)
     operator = nil
     operand1 = nil
     operand2 = nil
     result = nil
 
-    tokens = line.split(' ')
+
     stack = LineStack.new()
     tokens.each do |token|
       if is_operator?(token)
