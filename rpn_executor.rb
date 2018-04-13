@@ -9,11 +9,6 @@ class RPNExecutor
   end
 
   def execute(line)
-
-    stack = LineStack.new(line)
-    error = stack.check_syntax_errors
-    return error unless error.nil?
-
     tokens = line.split(' ')
 
     unless tokens.empty?
@@ -25,59 +20,63 @@ class RPNExecutor
       elsif tokens[0] == 'QUIT'
         "QUIT"
       else
-        calculate(stack)
+        puts calculate(line)
       end
 
     end
   end
 
-  def print_op(stack)
+  # def print_op(stack)
+  #
+  #   if arr.size == 1
+  #     puts arr[0]
+  #   else
+  #   end
+  # end
 
-    if arr.size == 1
-      puts arr[0]
-    else
-
-    puts calculate
-
-    end
-  end
-
-  def let_op(stack)
-    if(is_operator?(stack.peak))
-      value = calculate(stack)
-    else
-      value = stack.pop
-    end
-
-    variable_name = stack.pop
-    stack[variable_name] = value
-  end
+  # def let_op(stack)
+  #   if(is_operator?(stack.peek))
+  #     value = calculate(stack)
+  #   else
+  #     value = stack.pop
+  #   end
+  #
+  #   variable_name = stack.pop
+  #   stack[variable_name] = value
+  # end
 
   def is_operator?(token)
     return true if token == '+' || token == '-' || token == '/' || token == '*'
     return false
   end
 
-  def calculate(stack)
-    operator = stack.pop
-    operand1 = stack.pop
-    operand2 = stack.pop
+  def calculate(line)
+    operator = nil
+    operand1 = nil
+    operand2 = nil
+    result = nil
 
-    operand1 = @variables.check_for_variable(operand1)
-    return if operand1.is_a?(Error)
-
-    operand2 = @variables.check_for_variable(operand2)
-    return if operand2.is_a?(Error)
-
-    if operator == '+'
-      operand1 + operand2
-    elsif operator == '-'
-      operand2 - operand1
-    elsif operator == '*'
-      operand1 * operand2
-    elsif operator == '/'
-      operand2 / operand1
+    tokens = line.split(' ')
+    stack = LineStack.new()
+    tokens.each do |token|
+      if is_operator?(token)
+        operand1 = stack.pop
+        operand2 = stack.pop
+        if token == '+'
+          result = operand1 + operand2
+        elsif token == '-'
+          result = operand2 - operand1
+        elsif token == '*'
+          result = operand1 * operand2
+        elsif token == '/'
+          result = operand2 / operand1
+        end
+        stack.push(result)
+      else #assume constant operand for now
+        stack.push(token.to_i)
+      end
     end
+    return stack.pop
   end
 
 end
