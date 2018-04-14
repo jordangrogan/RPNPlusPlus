@@ -9,7 +9,7 @@ class RPNExecutorTest < Minitest::Test
   end
 
   def test_adding
-    assert_output("7\n") { @rpn.execute("4 3 +") }
+    assert_equal 7, @rpn.execute("4 3 +")
   end
 
 end
