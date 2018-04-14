@@ -86,14 +86,14 @@ class RPNExecutor
     variable_name = tokens.shift
     # if the stack is empty here return an error
     if tokens.empty?
-      return "Operator LET applied to empty stack"
+      return Error.new "Operator LET applied to empty stack"
     end
     # if the variable is a valid var name, pass the rpn expression
     # to calculate and set it equal to its return value
     if is_var?(variable_name)
       @variables.set_variable(variable_name,calculate(tokens))
     else
-      puts "invalid variable name"
+      return Error.new "Invalid variable name"
     end
 
   end
