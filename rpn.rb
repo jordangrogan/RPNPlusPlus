@@ -24,12 +24,14 @@ if ARGV.count > 0
 else
   # REPL mode
 
-  value = nil;
+  value = nil
+  line_count = 0
   while(value != "QUIT")
+    line_count += 1
     print '> '
     value = rpn.execute(gets.chomp.upcase)
     if(value).is_a?(Error)
-      puts "#{value.error_message}"
+      puts "Line #{line_count}: #{value.error_message}"
     end
     puts value if value != "QUIT" && !value.is_a?(Error)
   end
