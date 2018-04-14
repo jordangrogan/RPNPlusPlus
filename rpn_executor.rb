@@ -12,6 +12,9 @@ class RPNExecutor
     tokens = line.split(' ')
 
     unless tokens.empty?
+      if tokens[0] == 'QUIT'
+        return "QUIT"
+      end
       token_check = look_for_invalid_token(tokens)
       unless token_check == true
         return Error.new "Invalid token #{token_check} found in line"
@@ -28,8 +31,6 @@ class RPNExecutor
       elsif tokens[0] == 'PRINT'
         tokens.shift
         print_op(tokens)
-      elsif tokens[0] == 'QUIT'
-        "QUIT"
       elsif tokens[0] =~ /[A-Za-z]{2,}/
         return Error.new "Unknown keyword #{tokens[0]}"
       else
@@ -73,6 +74,9 @@ class RPNExecutor
 
   def let_op(tokens)
     variable_name = tokens.shift
+    if tokens.empty?
+      return "Operator LET applied to empty stack"
+    end
     if is_var?(variable_name)
       @variables.set_variable(variable_name,calculate(tokens))
     else
