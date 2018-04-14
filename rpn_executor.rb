@@ -29,7 +29,7 @@ class RPNExecutor
   end
 
   def print_op(tokens)
-    puts calculate(tokens)
+    print calculate(tokens)
   end
 
   def let_op(tokens)
