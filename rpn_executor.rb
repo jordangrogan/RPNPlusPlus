@@ -61,8 +61,9 @@ class RPNExecutor
 
   # Returns invalid token if one is found, else returns true
   def look_for_invalid_token(tokens)
+    count = 0
     tokens.each do |token|
-      if !is_keyword?(token) && !is_var?(token) && !is_int?(token) && !is_operator?(token)
+      if !is_keyword?(token) && !is_var?(token) && !is_int?(token) && !is_operator?(token) && count > 0
         return token
       end
     end
