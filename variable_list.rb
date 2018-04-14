@@ -19,12 +19,10 @@ class VariableList
   end
 
   def check_for_variable(value)
-    if is_number?(value)
-      return value.to_i
-    elsif @variables.key?(value)
-      return @variables[value].to_i
+    if @variables.key?(value)
+      return true
     else
-      return Error.new "Variable #{value} is not initialized"
+      return false
     end
   end
 

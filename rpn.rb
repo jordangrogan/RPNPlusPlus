@@ -28,7 +28,10 @@ else
   while(value != "QUIT")
     print '> '
     value = rpn.execute(gets.chomp.upcase)
-    puts value if value != "QUIT"
+    if(value).is_a?(Error)
+      puts "#{value.error_message}"
+    end
+    puts value if value != "QUIT" && !value.is_a?(Error)
   end
 
 end

@@ -18,4 +18,8 @@ class LineStack
     @stack.pop
   end
 
+  def get_num_items
+    @stack.length
+  end
+
 end
