@@ -14,6 +14,8 @@ class RPNExecutorTest < Minitest::Test
   #   assert_equal 7, @rpn.execute("4 3 +")
   # end
 
+  # TODO: UNIT TESTS for execute
+
   # UNIT TEST FOR check_keyword_order
   # Return true if they are in the correct order (keyword at beginning)
   # Return the invalid keywords if they are in the incorrect order
@@ -26,11 +28,11 @@ class RPNExecutorTest < Minitest::Test
     assert_equal @rpn.check_keyword_order(tokens_bad_2), "LET"
   end
 
-  # UNIT TEST FOR look_for_invalid_token
+  # TODO: UNIT TEST FOR look_for_invalid_token
 
-  # UNIT TEST FOR print_op
+  # TODO: UNIT TEST FOR print_op
 
-  # UNIT TEST for let_op
+  # TODO: UNIT TEST for let_op
 
   # UNIT TEST FOR is_operator? FUNCTION
   # Test that it returns true when +, -, /, and * are input
@@ -51,8 +53,8 @@ class RPNExecutorTest < Minitest::Test
     assert @rpn.is_keyword?('LET')
     assert @rpn.is_keyword?('PRINT')
     assert @rpn.is_keyword?('QUIT')
-    refute @rpn.is_operator?('1')
-    refute @rpn.is_operator?('a')
+    refute @rpn.is_keyword?('1')
+    refute @rpn.is_keyword?('a')
   end
 
   # UNIT TEST FOR is_var? FUNCTION
