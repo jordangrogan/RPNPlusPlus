@@ -1,4 +1,5 @@
 LET A 1
 LET B 2
 PRINT A B +
+PRINT 5
 QUIT
