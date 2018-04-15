@@ -18,5 +18,4 @@ class VariableList
   def get_variable(name)
     @variables[name]
   end
-
 end
