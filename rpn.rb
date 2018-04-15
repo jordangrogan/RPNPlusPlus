@@ -7,10 +7,14 @@ if ARGV.count > 0
 
   value = nil
   ARGV.each do |file|
-    File.open(file, 'r').each_line do |line|
-      value = rpn.execute(line.upcase)
-      puts "Line #{i}: #{value.error_message}" if value.is_a?(Error)
-      break if value == 'QUIT'
+    begin
+      File.open(file, 'r').each_line do |line|
+        value = rpn.execute(line.upcase)
+        puts "Line #{i}: #{value.error_message}" if value.is_a?(Error)
+        break if value == 'QUIT'
+      end
+    rescue Errno::ENOENT
+      puts "File not found."
     end
     break if value == 'QUIT'
   end
