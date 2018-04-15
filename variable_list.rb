@@ -7,7 +7,7 @@ class VariableList
     @variables = {}
   end
 
-  def variable_exist?(variable_name)
+  def variable_initialized?(variable_name)
     @variables.key?(variable_name)
   end
 
@@ -19,8 +19,4 @@ class VariableList
     @variables[name]
   end
 
-  def check_for_variable(value)
-    true if @variables.key?(value)
-    false
-  end
 end

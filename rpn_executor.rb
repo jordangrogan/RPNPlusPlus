@@ -160,7 +160,7 @@ class RPNExecutor
         # if the token is not an operator check if it is a valid variable name
         if is_var?(token)
           # if the variable is uninitialized return an error
-          unless @variables.check_for_variable(token)
+          unless @variables.variable_initialized?(token)
             return Error.new "Variable #{token} is not initialized"
           end
           # if the variable is valid and initialized, push its value onto the stack
