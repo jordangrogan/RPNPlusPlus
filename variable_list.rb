@@ -8,7 +8,7 @@ class VariableList
   end
 
   def variable_exist?(variable_name)
-    return @variables.key?(variable_name)
+    @variables.key?(variable_name)
   end
 
   def set_variable(name, value)
@@ -20,11 +20,7 @@ class VariableList
   end
 
   def check_for_variable(value)
-    if @variables.key?(value)
-      return true
-    else
-      return false
-    end
+    true if @variables.key?(value)
+    false
   end
-
 end
