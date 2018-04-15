@@ -69,6 +69,7 @@ class RPNExecutor
     end
     return true
   end
+
   # will print out the result of the RPN expression passed to calculate
   # unless an error is returned
   def print_op(tokens)
@@ -109,7 +110,7 @@ class RPNExecutor
   end
 
   def is_var?(token)
-    return true if token =~ /[[:alpha:]]{1}/ && token.bytesize == 1
+    return true if token =~ /[[:alpha:]]{1}/ && token.length == 1
   end
 
   # checking if a token is an integer
