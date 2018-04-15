@@ -2,11 +2,11 @@ require_relative 'error'
 
 # Class for each line's call stack
 class LineStack
-  def initialize()
+  def initialize
     @stack = []
   end
 
-  def push item
+  def push(item)
     @stack.push(item)
   end
 
@@ -18,8 +18,7 @@ class LineStack
     @stack.pop
   end
 
-  def get_num_items
+  def num_items
     @stack.length
   end
-
 end
