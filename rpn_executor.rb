@@ -172,8 +172,8 @@ class RPNExecutor
       end
     end
     # if the calculation is complete and there is more than one item on the stack return an error
-    if stack.get_num_items > 1
-      return Error.new "#{stack.get_num_items} elements in stack after evaluation"
+    if stack.num_items > 1
+      return Error.new "#{stack.num_items} elements in stack after evaluation"
     else
       # return the result by popping it off the stack
       return stack.pop
