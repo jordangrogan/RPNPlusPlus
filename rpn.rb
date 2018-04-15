@@ -24,7 +24,7 @@ else
     print '> '
     value = rpn.execute(gets.chomp.upcase)
     puts "Line #{line_count}: #{value.error_message}" if value.is_a?(Error)
-    puts value if value != 'QUIT' && !value.is_a?(Error)
+    puts value if value != 'QUIT' && !value.is_a?(Error) && value != ""
   end
 
 end

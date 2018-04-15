@@ -72,11 +72,12 @@ class RPNExecutor
   # will print out the result of the RPN expression passed to calculate
   # unless an error is returned
   def print_op(tokens)
-    val = calculate(tokens)
-    if val.is_a?(Error)
-      val
+    value = calculate(tokens)
+    if value.is_a?(Error)
+      return value
     else
-      print val
+      puts value
+      return ""
     end
 
   end
