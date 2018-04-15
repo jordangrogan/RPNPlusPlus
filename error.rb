@@ -7,5 +7,4 @@ class Error
   def error_message
     @message
   end
-
 end
