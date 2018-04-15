@@ -21,7 +21,7 @@ class VariableListTest < Minitest::Test
   # Set a variable and get it, then make sure those are equal
   def test_get_set_variable
     @variable_list.set_variable("test_name", "test_value")
-    assert @variable_list.get_variable("test_name"), "test_value"
+    assert_equal @variable_list.get_variable("test_name"), "test_value"
   end
 
 end
