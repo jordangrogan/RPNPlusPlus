@@ -6,11 +6,16 @@ if ARGV.count > 0
   # File mode
 
   value = nil
+  line_count = 0
   ARGV.each do |file|
     begin
       File.open(file, 'r').each_line do |line|
+        line_count += 1
         value = rpn.execute(line.upcase)
-        puts "Line #{i}: #{value.error_message}" if value.is_a?(Error)
+        if value.is_a?(Error)
+          puts "Line #{line_count}: #{value.error_message}"
+          exit value.error_code
+        end
         break if value == 'QUIT'
       end
     rescue Errno::ENOENT

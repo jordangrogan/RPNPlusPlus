@@ -20,13 +20,13 @@ class RPNExecutor
       token_check = look_for_invalid_token(tokens)
       unless token_check == true
         # if an invalid token was found then return it and report the error
-        return Error.new "Invalid token #{token_check} found in line"
+        return Error.new "Invalid token #{token_check} found in line", 5
       end
       # check to see there isn't a keyword not at the start of the line
       key_order = check_keyword_order(tokens)
       # if there was  keyword found at an invalid spot return an error
       unless key_order == true
-        return Error.new "Keyword #{key_order} not at start of line"
+        return Error.new "Keyword #{key_order} not at start of line", 5
       end
       # at this point there are no invalid tokens and keywords are in correct order
       # check to see which keyword is used if one is used
@@ -38,7 +38,7 @@ class RPNExecutor
         print_op(tokens)
       # this may not actually get hit ever because look_for_invalid_token should catch this I believe
       elsif tokens[0] =~ /[A-Za-z]{2,}/
-        return Error.new "Unknown keyword #{tokens[0]}"
+        return Error.new "Unknown keyword #{tokens[0]}", 4
       else
         # If no keyword is used then just perform a calculation
         return calculate(tokens)
@@ -88,14 +88,14 @@ class RPNExecutor
     variable_name = tokens.shift
     # if the stack is empty here return an error
     if tokens.empty?
-      return Error.new "Operator LET applied to empty stack"
+      return Error.new "Operator LET applied to empty stack", 2
     end
     # if the variable is a valid var name, pass the rpn expression
     # to calculate and set it equal to its return value
     if is_var?(variable_name)
       @variables.set_variable(variable_name,calculate(tokens))
     else
-      return Error.new "Invalid variable name"
+      return Error.new "Invalid variable name", 5
     end
 
   end
@@ -144,7 +144,7 @@ class RPNExecutor
         operand1 = stack.pop
         operand2 = stack.pop
         if operand1 == nil || operand2 == nil
-          return Error.new "Operator #{token} applied to empty stack"
+          return Error.new "Operator #{token} applied to empty stack", 2
         end
         if token == '+'
           result = operand1 + operand2
@@ -162,7 +162,7 @@ class RPNExecutor
         if is_var?(token)
           # if the variable is uninitialized return an error
           unless @variables.variable_initialized?(token)
-            return Error.new "Variable #{token} is not initialized"
+            return Error.new "Variable #{token} is not initialized", 1
           end
           # if the variable is valid and initialized, push its value onto the stack
           stack.push(@variables.get_variable(token))
@@ -174,7 +174,7 @@ class RPNExecutor
     end
     # if the calculation is complete and there is more than one item on the stack return an error
     if stack.num_items > 1
-      return Error.new "#{stack.num_items} elements in stack after evaluation"
+      return Error.new "#{stack.num_items} elements in stack after evaluation", 3
     else
       # return the result by popping it off the stack
       return stack.pop
