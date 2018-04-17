@@ -19,7 +19,7 @@ if ARGV.count > 0
         break if value == 'QUIT'
       end
     rescue Errno::ENOENT
-      puts "File not found."
+      puts 'File not found.'
     end
     break if value == 'QUIT'
   end
@@ -31,7 +31,12 @@ else
   while value != 'QUIT'
     line_count += 1
     print '> '
-    value = rpn.execute(gets.chomp.upcase)
+    begin
+      value = rpn.execute(gets.chomp.upcase)
+    rescue Interrupt # Handle ctrl-c
+      puts ''
+      value = 'QUIT'
+    end
     puts "Line #{line_count}: #{value.error_message}" if value.is_a?(Error)
     puts value if value != 'QUIT' && !value.is_a?(Error) && value != ''
   end
