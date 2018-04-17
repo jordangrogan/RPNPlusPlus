@@ -84,46 +84,46 @@ class RPNExecutorTest < Minitest::Test
   end
 
 
-  # UNIT TEST FOR is_operator? FUNCTION
+  # UNIT TEST FOR operator? FUNCTION
   # Test that it returns true when +, -, /, and * are input
   # Test that it returns false when +, -, /, and * are not an input
   def test_is_operator
-    assert @rpn.is_operator?('+')
-    assert @rpn.is_operator?('-')
-    assert @rpn.is_operator?('/')
-    assert @rpn.is_operator?('*')
-    refute @rpn.is_operator?('1')
-    refute @rpn.is_operator?('a')
+    assert @rpn.operator?('+')
+    assert @rpn.operator?('-')
+    assert @rpn.operator?('/')
+    assert @rpn.operator?('*')
+    refute @rpn.operator?('1')
+    refute @rpn.operator?('a')
   end
 
-  # UNIT TEST FOR is_keyword? FUNCTION
+  # UNIT TEST FOR keyword? FUNCTION
   # Test that it returns true when "LET", "PRINT", and "QUIT" are input
   # Test that it returns false when "LET", "PRINT", and "QUIT" aren't input
   def test_is_keyword
-    assert @rpn.is_keyword?('LET')
-    assert @rpn.is_keyword?('PRINT')
-    assert @rpn.is_keyword?('QUIT')
-    refute @rpn.is_keyword?('1')
-    refute @rpn.is_keyword?('a')
+    assert @rpn.keyword?('LET')
+    assert @rpn.keyword?('PRINT')
+    assert @rpn.keyword?('QUIT')
+    refute @rpn.keyword?('1')
+    refute @rpn.keyword?('a')
   end
 
-  # UNIT TEST FOR is_var? FUNCTION
+  # UNIT TEST FOR var? FUNCTION
   # Test that it returns true when the input is a letter & only one character
   # Test that it returns false when the input is >1 character or a number
   def test_is_keyword
-    assert @rpn.is_var?('a')
-    refute @rpn.is_var?('longer_than_one_character')
-    refute @rpn.is_var?('1')
+    assert @rpn.var?('a')
+    refute @rpn.var?('longer_than_one_character')
+    refute @rpn.var?('1')
   end
 
-  # UNIT TEST FOR is_int? FUNCTION
+  # UNIT TEST FOR int? FUNCTION
   # Test that it returns true when the input is an integer
   # Test that it returns false when the input is not an integer
   def test_is_int
-    assert @rpn.is_int?('1')
-    assert @rpn.is_int?('10')
-    refute @rpn.is_int?('a')
-    refute @rpn.is_int?('longer_than_one_character')
+    assert @rpn.int?('1')
+    assert @rpn.int?('10')
+    refute @rpn.int?('a')
+    refute @rpn.int?('longer_than_one_character')
   end
 
   # UNIT TESTS FOR calculate FUNCTION
