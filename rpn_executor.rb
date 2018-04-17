@@ -93,7 +93,12 @@ class RPNExecutor
     # if the variable is a valid var name, pass the rpn expression
     # to calculate and set it equal to its return value
     if is_var?(variable_name)
-      @variables.set_variable(variable_name,calculate(tokens))
+      value = calculate(tokens)
+      if !value.is_a?(Error)
+        @variables.set_variable(variable_name,value)
+      else
+        return value
+      end
     else
       return Error.new "Invalid variable name", 5
     end
