@@ -102,4 +102,15 @@ class RPNExecutorTest < Minitest::Test
     }
   end
 
+  # Test for integer overflow, per requirement 3
+  #    999999999999999999999999999
+  # +  999999999999999999999999999
+  # ______________________________
+  # = 1999999999999999999999999998
+  def test_integer_overflow
+    x = 999999999999999999999999999
+    y = 999999999999999999999999999
+    assert_equal @rpn.calculate([x.to_s, y.to_s, '+']), 1999999999999999999999999998
+  end
+
 end
