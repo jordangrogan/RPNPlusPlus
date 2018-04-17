@@ -30,10 +30,23 @@ class RPNExecutorTest < Minitest::Test
 
   # TODO: UNIT TEST FOR look_for_invalid_token
 
-  # TODO: UNIT TEST FOR print_op
+  # UNIT TESTS FOR print_op
+  # Equivalence classes:
+  # Tokens are a valid expression -> print value & return ""
+  # Tokens are not a valid expression -> print nothing & return error
+
+  def test_print_op_valid_expression
+    assert_output("2\n") { @rpn.print_op(['1', '1', '+']) }
+    assert_equal @rpn.print_op(['1', '1', '+']), ""
+  end
+
+  def test_print_op_invalid_expression
+    assert_output("") { @rpn.print_op(['1', '1', '+' '+']) }
+    assert_kind_of Error, @rpn.print_op(['1', '1', '+' '+'])
+  end
 
   # UNIT TESTS for let_op
-  # Edge cases:
+  # Equivalence classes:
   # Tokens are valid expression -> Return & set variable equal to expression
   # Tokens are invalid expression -> Return error
   # Variable name is invalid -> Return error
