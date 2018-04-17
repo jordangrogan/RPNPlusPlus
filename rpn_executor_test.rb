@@ -32,7 +32,31 @@ class RPNExecutorTest < Minitest::Test
 
   # TODO: UNIT TEST FOR print_op
 
-  # TODO: UNIT TEST for let_op
+  # UNIT TESTS for let_op
+  # Edge cases:
+  # Tokens are valid expression -> Return & set variable equal to expression
+  # Tokens are invalid expression -> Return error
+  # Variable name is invalid -> Return error
+
+  def test_let_op_valid_expression
+    value = @rpn.let_op(['a', '1'])
+    assert_equal value, 1
+    value = @rpn.let_op(['a', '1', '1', '+'])
+    assert_equal value, 2
+  end
+
+  def test_let_op_invalid_expression
+    value = @rpn.let_op(['a'])
+    assert_kind_of Error, value
+    value = @rpn.let_op(['a', '1', '+'])
+    assert_kind_of Error, value
+  end
+
+  def test_let_op_variable_name_invalid
+    value = @rpn.let_op(['test', '1'])
+    assert_kind_of Error, value
+  end
+
 
   # UNIT TEST FOR is_operator? FUNCTION
   # Test that it returns true when +, -, /, and * are input
