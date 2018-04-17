@@ -11,36 +11,35 @@ class RPNExecutor
   def execute(line)
     tokens = line.split(' ')
 
-    unless tokens.empty?
-      # check if the user entered quit before anything else
-      return 'QUIT' if tokens[0] == 'QUIT'
-      # create a boolean to check for basic invalid tokens
-      # token_check = look_for_invalid_token(tokens)
-      # unless token_check == true
-      #   # if an invalid token was found then return it and report the error
-      #   return Error.new("Invalid token #{token_check} found in line", 5)
-      # end
-      # check to see there isn't a keyword not at the start of the line
-      key_order = check_keyword_order(tokens)
-      # if there was  keyword found at an invalid spot return an error
-      er1 = Error.new("Keyword #{key_order} not at start of line", 5)
-      return er1 unless key_order == true
-      # at this point there are no invalid tokens
-      # and keywords are in correct order
-      # check to see which keyword is used if one is used
-      if tokens[0] == 'LET'
-        tokens.shift
-        let_op(tokens)
-      elsif tokens[0] == 'PRINT'
-        tokens.shift
-        print_op(tokens)
-      elsif tokens[0] =~ /[A-Za-z]{2,}/
-        return Error.new("Unknown keyword #{tokens[0]}", 4)
-      else
-        # If no keyword is used then just perform a calculation
-        return calculate(tokens)
-      end
+    return '' if tokens.empty?
 
+    # check if the user entered quit before anything else
+    return 'QUIT' if tokens[0] == 'QUIT'
+    # create a boolean to check for basic invalid tokens
+    # token_check = look_for_invalid_token(tokens)
+    # unless token_check == true
+    #   # if an invalid token was found then return it and report the error
+    #   return Error.new("Invalid token #{token_check} found in line", 5)
+    # end
+    # check to see there isn't a keyword not at the start of the line
+    key_order = check_keyword_order(tokens)
+    # if there was  keyword found at an invalid spot return an error
+    er1 = Error.new("Keyword #{key_order} not at start of line", 5)
+    return er1 unless key_order == true
+    # at this point there are no invalid tokens
+    # and keywords are in correct order
+    # check to see which keyword is used if one is used
+    if tokens[0] == 'LET'
+      tokens.shift
+      let_op(tokens)
+    elsif tokens[0] == 'PRINT'
+      tokens.shift
+      print_op(tokens)
+    elsif tokens[0] =~ /[A-Za-z]{2,}/
+      return Error.new("Unknown keyword #{tokens[0]}", 4)
+    else
+      # If no keyword is used then just perform a calculation
+      return calculate(tokens)
     end
   end
 
