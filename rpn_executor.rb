@@ -15,11 +15,11 @@ class RPNExecutor
       # check if the user entered quit before anything else
       return 'QUIT' if tokens[0] == 'QUIT'
       # create a boolean to check for basic invalid tokens
-      token_check = look_for_invalid_token(tokens)
-      unless token_check == true
-        # if an invalid token was found then return it and report the error
-        return Error.new("Invalid token #{token_check} found in line", 5)
-      end
+      # token_check = look_for_invalid_token(tokens)
+      # unless token_check == true
+      #   # if an invalid token was found then return it and report the error
+      #   return Error.new("Invalid token #{token_check} found in line", 5)
+      # end
       # check to see there isn't a keyword not at the start of the line
       key_order = check_keyword_order(tokens)
       # if there was  keyword found at an invalid spot return an error
@@ -49,67 +49,56 @@ class RPNExecutor
   def check_keyword_order(tokens)
     count = 0
     tokens.each do |token|
-      if keyword?(token) && count > 0
-        return token
-      end
+      return token if keyword?(token) && count > 0
       count += 1
     end
-    return true
+    true
   end
 
   # Returns invalid token if one is found, else returns true
-  def look_for_invalid_token(tokens)
-    count = 0
-    tokens.each do |token|
-      if !keyword?(token) && !var?(token) && !int?(token) && !operator?(token) && count > 0
-        return token
-      end
-      count+=1
-    end
-    return true
-  end
+  # def look_for_invalid_token(tokens)
+  #   count = 0
+  #   tokens.each do |token|
+  #     if !keyword?(token) && !var?(token) && !int?(token) && !operator?(token) && count > 0
+  #       return token
+  #     end
+  #     count+=1
+  #   end
+  #   return true
+  # end
 
   # will print out the result of the RPN expression passed to calculate
   # unless an error is returned
   def print_op(tokens)
     value = calculate(tokens)
-    if value.is_a?(Error)
-      return value
-    else
-      puts value
-      return ''
-    end
+    return value if value.is_a?(Error)
+    puts value
+    ''
   end
 
   # will set the variable being LET equal to the following rpn expression
   def let_op(tokens)
     variable_name = tokens.shift
     # if the stack is empty here return an error
-    if tokens.empty?
-      return Error.new('Operator LET applied to empty stack', 2)
-    end
+    return Error.new('Operator LET applied to empty stack', 2) if tokens.empty?
     # if the variable is a valid var name, pass the rpn expression
     # to calculate and set it equal to its return value
     if var?(variable_name)
       value = calculate(tokens)
-      if !value.is_a?(Error)
-        @variables.set_variable(variable_name, value)
-      else
-        return value
-      end
+      @variables.set_variable(variable_name, value) unless value.is_a?(Error)
+      value
     else
-      return Error.new('Invalid variable name', 5)
+      Error.new('Invalid variable name', 5)
     end
-
   end
 
   def operator?(token)
-    return true if token == '+' || token == '-' || token == '/' || token == '*'
-    return false
+    return true if ['+', '-', '/', '*'].include?(token)
+    false
   end
 
   def keyword?(token)
-    return true if token == 'LET' || token == 'PRINT' || token == 'QUIT'
+    return true if %w[LET PRINT QUIT].include?(token)
   end
 
   def var?(token)
@@ -124,15 +113,12 @@ class RPNExecutor
     count = 0
     chars.each do |char|
       match = char =~ /[[:digit:]]/
-      isNeg = char =~ /(-)/
-      if count.zero? && !isNeg.nil?
-        next
-      elsif match.nil?
-        return false
-      end
-      count +=1
+      is_neg = char =~ /(-)/
+      next if count.zero? && !is_neg.nil?
+      return false if match.nil?
+      count += 1
     end
-    return true
+    true
   end
 
   # will take any RPN expression and return its result
@@ -143,13 +129,12 @@ class RPNExecutor
     operand2 = nil
     result = nil
 
-    stack = LineStack.new()
+    stack = LineStack.new
     tokens.each do |token|
       # if the token is an operator, pop two operands off the stack
       # and calculate the result based on which operator is being used
       if operator?(token)
-        operand1 = stack.pop
-        operand2 = stack.pop
+        operand1 = stack.pop; operand2 = stack.pop
         if operand1.nil? || operand2.nil?
           return Error.new("Operator #{token} applied to empty stack", 2)
         end
@@ -164,30 +149,27 @@ class RPNExecutor
         end
         # push the result onto the stack
         stack.push(result)
-      else
         # if the token is not an operator check if it is a valid variable name
-        if var?(token)
-          # if the variable is uninitialized return an error
-          unless @variables.variable_initialized?(token)
-            return Error.new("Variable #{token} is not initialized", 1)
-          end
-          # if the variable is valid and initialized, push its value onto the stack
-          stack.push(@variables.get_variable(token))
-        # if the token is not a variable, make sure it is an integer and push it onto the stack
-        elsif int?(token)
-          stack.push(token.to_i)
-        else
-          return Error.new('Invalid syntax', 5)
+      elsif var?(token)
+        # if the variable is uninitialized return an error
+        unless @variables.variable_initialized?(token)
+          return Error.new("Variable #{token} is not initialized", 1)
         end
+        # if the variable is valid and initialized, push its value onto the stack
+        stack.push(@variables.get_variable(token))
+        # if the token is not a variable, make sure it is an integer and push it onto the stack
+      elsif int?(token)
+        stack.push(token.to_i)
+      else
+        return Error.new('Invalid syntax', 5)
       end
     end
-    # if the calculation is complete and there is more than one item on the stack return an error
-    if stack.num_items > 1
-      return Error.new("#{stack.num_items} elements in stack after evaluation", 3)
-    else
-      # return the result by popping it off the stack
-      return stack.pop
-    end
-  end
+    # if the calculation is complete and there is more than one
+    # item on the stack return an error
+    er = Error.new("#{stack.num_items} elements in stack after evaluation", 3)
+    return er if stack.num_items > 1
 
+    # return the result by popping it off the stack
+    stack.pop
+  end
 end
