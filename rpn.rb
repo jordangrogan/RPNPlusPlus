@@ -33,7 +33,7 @@ else
     print '> '
     begin
       value = rpn.execute(gets.chomp.upcase)
-    rescue Interrupt # Handle ctrl-c
+    rescue Interrupt, Exception # Handle ctrl-c and ctrl-d
       puts ''
       value = 'QUIT'
     end
