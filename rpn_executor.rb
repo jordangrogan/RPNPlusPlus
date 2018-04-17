@@ -175,7 +175,7 @@ class RPNExecutor
         elsif is_int?(token)
           stack.push(token.to_i)
         else
-          return Error.new "Invalid token", 5
+          return Error.new "Invalid syntax", 5
         end
       end
     end
