@@ -64,6 +64,7 @@ class RPNExecutor
       if !keyword?(token) && !var?(token) && !int?(token) && !operator?(token) && count > 0
         return token
       end
+      count+=1
     end
     return true
   end
@@ -120,11 +121,16 @@ class RPNExecutor
     # split the token into a character array, and check every character
     # to verify it is a digit, if any character is not a digit return false
     chars = token.split('')
+    count = 0
     chars.each do |char|
       match = char =~ /[[:digit:]]/
-      if match.nil?
+      isNeg = char =~ /(-)/
+      if count.zero? && !isNeg.nil?
+        next
+      elsif match.nil?
         return false
       end
+      count +=1
     end
     return true
   end

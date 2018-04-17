@@ -1,0 +1,10 @@
+4 3 + 
+LET a 10
+a 1 +
+2
+LET b 2 2 +
+LET c a b +
+PRINT c
+PRINT c 1 +
+PRINT 10 10 * 5 5 * 0 0 * + +
+QUIT
