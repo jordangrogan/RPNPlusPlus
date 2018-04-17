@@ -23,9 +23,8 @@ class RPNExecutor
       # check to see there isn't a keyword not at the start of the line
       key_order = check_keyword_order(tokens)
       # if there was  keyword found at an invalid spot return an error
-      unless key_order == true
-        return Error.new("Keyword #{key_order} not at start of line", 5)
-      end
+      er1 = Error.new("Keyword #{key_order} not at start of line", 5)
+      return er1 unless key_order == true
       # at this point there are no invalid tokens and keywords are in correct order
       # check to see which keyword is used if one is used
       if tokens[0] == 'LET'
@@ -34,7 +33,6 @@ class RPNExecutor
       elsif tokens[0] == 'PRINT'
         tokens.shift
         print_op(tokens)
-      # this may not actually get hit ever because look_for_invalid_token should catch this I believe
       elsif tokens[0] =~ /[A-Za-z]{2,}/
         return Error.new("Unknown keyword #{tokens[0]}", 4)
       else
@@ -124,11 +122,6 @@ class RPNExecutor
   # will take any RPN expression and return its result
   # will return an error if the expression is improper
   def calculate(tokens)
-    operator = nil
-    operand1 = nil
-    operand2 = nil
-    result = nil
-
     stack = LineStack.new
     tokens.each do |token|
       # if the token is an operator, pop two operands off the stack
@@ -138,15 +131,12 @@ class RPNExecutor
         if operand1.nil? || operand2.nil?
           return Error.new("Operator #{token} applied to empty stack", 2)
         end
-        if token == '+'
-          result = operand1 + operand2
-        elsif token == '-'
-          result = operand2 - operand1
-        elsif token == '*'
-          result = operand1 * operand2
-        elsif token == '/'
-          result = operand2 / operand1
-        end
+
+        result = operand1 + operand2 if token == '+'
+        result = operand2 - operand1 if token == '-'
+        result = operand1 * operand2 if token == '*'
+        result = operand2 / operand1 if token == '/'
+
         # push the result onto the stack
         stack.push(result)
         # if the token is not an operator check if it is a valid variable name
