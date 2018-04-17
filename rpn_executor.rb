@@ -25,7 +25,8 @@ class RPNExecutor
       # if there was  keyword found at an invalid spot return an error
       er1 = Error.new("Keyword #{key_order} not at start of line", 5)
       return er1 unless key_order == true
-      # at this point there are no invalid tokens and keywords are in correct order
+      # at this point there are no invalid tokens
+      # and keywords are in correct order
       # check to see which keyword is used if one is used
       if tokens[0] == 'LET'
         tokens.shift
@@ -43,7 +44,8 @@ class RPNExecutor
     end
   end
 
-  # Returns the invalid keyword if keywords are incorrect order, true if they are
+  # Returns the invalid keyword if keywords are incorrect order,
+  # true if they are
   def check_keyword_order(tokens)
     count = 0
     tokens.each do |token|
@@ -57,7 +59,8 @@ class RPNExecutor
   # def look_for_invalid_token(tokens)
   #   count = 0
   #   tokens.each do |token|
-  #     if !keyword?(token) && !var?(token) && !int?(token) && !operator?(token) && count > 0
+  #     if !keyword?(token) && !var?(token) &&
+  # !int?(token) && !operator?(token) && count > 0
   #       return token
   #     end
   #     count+=1
@@ -127,7 +130,8 @@ class RPNExecutor
       # if the token is an operator, pop two operands off the stack
       # and calculate the result based on which operator is being used
       if operator?(token)
-        operand1 = stack.pop; operand2 = stack.pop
+        operand1 = stack.pop
+        operand2 = stack.pop
         if operand1.nil? || operand2.nil?
           return Error.new("Operator #{token} applied to empty stack", 2)
         end
@@ -145,9 +149,11 @@ class RPNExecutor
         unless @variables.variable_initialized?(token)
           return Error.new("Variable #{token} is not initialized", 1)
         end
-        # if the variable is valid and initialized, push its value onto the stack
+        # if the variable is valid and initialized,
+        # push its value onto the stack
         stack.push(@variables.get_variable(token))
-        # if the token is not a variable, make sure it is an integer and push it onto the stack
+        # if the token is not a variable, make sure it is an integer
+        # and push it onto the stack
       elsif int?(token)
         stack.push(token.to_i)
       else
