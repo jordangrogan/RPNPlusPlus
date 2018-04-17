@@ -28,7 +28,20 @@ class RPNExecutorTest < Minitest::Test
     assert_equal @rpn.check_keyword_order(tokens_bad_2), "LET"
   end
 
-  # TODO: UNIT TEST FOR look_for_invalid_token
+  # UNIT TESTS FOR look_for_invalid_token
+  # Equivalence classes:
+  # Line contains invalid token -> return that token
+  # Line does not contain invalid token -> return true
+
+  # def test_look_for_invalid_token_invalid
+  #   tokens = ['testing']
+  #   assert_equal 'testing', @rpn.look_for_invalid_token(tokens)
+  # end
+  #
+  # def test_look_for_invalid_token_valid
+  #   tokens = ['let', 'a', '1', '1', '+']
+  #   assert @rpn.look_for_invalid_token(tokens)
+  # end
 
   # UNIT TESTS FOR print_op
   # Equivalence classes:
