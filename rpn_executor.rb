@@ -174,6 +174,8 @@ class RPNExecutor
         # if the token is not a variable, make sure it is an integer and push it onto the stack
         elsif is_int?(token)
           stack.push(token.to_i)
+        else
+          return Error.new "Invalid token", 5
         end
       end
     end
