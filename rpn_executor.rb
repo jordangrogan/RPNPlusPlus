@@ -11,24 +11,18 @@ class RPNExecutor
   def execute(line)
     tokens = line.split(' ')
 
+    # Check for a blank line, return ''
     return '' if tokens.empty?
 
     # check if the user entered quit before anything else
     return 'QUIT' if tokens[0] == 'QUIT'
-    # create a boolean to check for basic invalid tokens
-    # token_check = look_for_invalid_token(tokens)
-    # unless token_check == true
-    #   # if an invalid token was found then return it and report the error
-    #   return Error.new("Invalid token #{token_check} found in line", 5)
-    # end
+
     # check to see there isn't a keyword not at the start of the line
     key_order = check_keyword_order(tokens)
-    # if there was  keyword found at an invalid spot return an error
-    er1 = Error.new("Keyword #{key_order} not at start of line", 5)
-    return er1 unless key_order == true
-    # at this point there are no invalid tokens
-    # and keywords are in correct order
-    # check to see which keyword is used if one is used
+    unless key_order == true
+      return Error.new("Keyword #{key_order} not at start of line", 5)
+    end
+
     if tokens[0] == 'LET'
       tokens.shift
       let_op(tokens)
@@ -38,7 +32,8 @@ class RPNExecutor
     elsif tokens[0] =~ /[A-Za-z]{2,}/
       return Error.new("Unknown keyword #{tokens[0]}", 4)
     else
-      # If no keyword is used then just perform a calculation
+      # If no keyword is used & the first token is not
+      # longer than one character, just perform a calculation
       return calculate(tokens)
     end
   end
@@ -53,19 +48,6 @@ class RPNExecutor
     end
     true
   end
-
-  # Returns invalid token if one is found, else returns true
-  # def look_for_invalid_token(tokens)
-  #   count = 0
-  #   tokens.each do |token|
-  #     if !keyword?(token) && !var?(token) &&
-  # !int?(token) && !operator?(token) && count > 0
-  #       return token
-  #     end
-  #     count+=1
-  #   end
-  #   return true
-  # end
 
   # will print out the result of the RPN expression passed to calculate
   # unless an error is returned
@@ -92,20 +74,23 @@ class RPNExecutor
     end
   end
 
+  # Returns true if token is an operator, else returns false
   def operator?(token)
     return true if ['+', '-', '/', '*'].include?(token)
     false
   end
 
+  # Returns true if token is a keyword, else returns false
   def keyword?(token)
     return true if %w[LET PRINT QUIT].include?(token)
   end
 
+  # Returns true if token is a valid variable, else returns false
   def var?(token)
     return true if token =~ /[[:alpha:]]{1}/ && token.length == 1
   end
 
-  # checking if a token is an integer
+  # Returns true if token is a number, else returns false
   def int?(token)
     # split the token into a character array, and check every character
     # to verify it is a digit, if any character is not a digit return false
