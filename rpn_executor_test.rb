@@ -9,21 +9,45 @@ class RPNExecutorTest < Minitest::Test
     @rpn = RPNExecutor.new
   end
 
-  # System Level Testing
-  # def test_adding
-  #   assert_equal 7, @rpn.execute("4 3 +")
-  # end
+  # UNIT TESTS for execute
+  # Equivlence classes:
+  # Blank line -> Return ''
+  # Keywords out of order -> Return Error
+  # First token 'QUIT' -> Return 'QUIT'
+  # First token a string that is exactly 2 or more alpha chars -> Return Error
+  # First token 'LET' -> Return value of let_op (no way to test)
+  # First token 'PRINT' -> Return value of print_op (no way to test)
+  # First token is a number or single letter -> Return value of calculate (no way to test)
 
-  # TODO: UNIT TESTS for execute
+  def test_execute_blank_line
+    assert_equal @rpn.execute(''), ''
+  end
 
-  # UNIT TEST FOR check_keyword_order
+  def test_execute_keyword_out_of_order
+    assert_kind_of Error, @rpn.execute("4 3 LET + a")
+  end
+
+  def test_first_token_quit
+    assert_equal @rpn.execute('QUIT BUMBLEBEE'), 'QUIT'
+  end
+
+  def test_first_token_longer_than_two_alpha_chars
+    assert_kind_of Error, @rpn.execute("TEST")
+  end
+
+  # UNIT TESTS FOR check_keyword_order
+  # Equivalence classes:
   # Return true if they are in the correct order (keyword at beginning)
   # Return the invalid keywords if they are in the incorrect order
-  def test_check_keyword_order
+
+  def test_check_keyword_order_correct
     tokens = ["LET", "token1", "token2", "token3"]
+    assert @rpn.check_keyword_order(tokens)
+  end
+
+  def check_keyword_order_incorrect
     tokens_bad = ["token1", "LET", "token2", "token3"]
     tokens_bad_2 = ["token1", "token2", "LET", "token3"]
-    assert @rpn.check_keyword_order(tokens)
     assert_equal @rpn.check_keyword_order(tokens_bad), "LET"
     assert_equal @rpn.check_keyword_order(tokens_bad_2), "LET"
   end
@@ -68,46 +92,66 @@ class RPNExecutorTest < Minitest::Test
     assert_kind_of Error, value
   end
 
+  # UNITS TEST FOR operator? FUNCTION
+  # Equivalence classes:
+  # When +, -, /, and * are input -> Return true
+  # When +, -, /, and * are not an input -> Return false
 
-  # UNIT TEST FOR operator? FUNCTION
-  # Test that it returns true when +, -, /, and * are input
-  # Test that it returns false when +, -, /, and * are not an input
-  def test_is_operator
+  def test_operator_valid
     assert @rpn.operator?('+')
     assert @rpn.operator?('-')
     assert @rpn.operator?('/')
     assert @rpn.operator?('*')
+  end
+
+  def test_operator_invalid
     refute @rpn.operator?('1')
     refute @rpn.operator?('a')
   end
 
-  # UNIT TEST FOR keyword? FUNCTION
-  # Test that it returns true when "LET", "PRINT", and "QUIT" are input
-  # Test that it returns false when "LET", "PRINT", and "QUIT" aren't input
-  def test_is_keyword
+  # UNIT TESTS FOR keyword? FUNCTION
+  # Equivalence classes:
+  # When "LET", "PRINT", and "QUIT" are input -> Return true
+  # When "LET", "PRINT", and "QUIT" aren't input -> Return false
+
+  def test_keyword_valid
     assert @rpn.keyword?('LET')
     assert @rpn.keyword?('PRINT')
     assert @rpn.keyword?('QUIT')
+  end
+
+  def test_keyword_invalid
     refute @rpn.keyword?('1')
     refute @rpn.keyword?('a')
   end
 
-  # UNIT TEST FOR var? FUNCTION
-  # Test that it returns true when the input is a letter & only one character
-  # Test that it returns false when the input is >1 character or a number
-  def test_is_keyword
+  # UNIT TESTS FOR var? FUNCTION
+  # Equivalence classes:
+  # When the input is a letter & only one character -> Return true
+  # When the input is >1 character or a number -> Return false
+  def test_var_valid
     assert @rpn.var?('a')
+  end
+
+  def test_var_invalid
     refute @rpn.var?('longer_than_one_character')
     refute @rpn.var?('1')
   end
 
-  # UNIT TEST FOR int? FUNCTION
-  # Test that it returns true when the input is an integer
-  # Test that it returns false when the input is not an integer
-  def test_is_int
+  # UNIT TESTS FOR int? FUNCTION
+  # Equivalence classes:
+  # When the input is an integer -> Return true
+  # When the input is not an integer -> Return false
+  def test_int_valid
     assert @rpn.int?('1')
     assert @rpn.int?('10')
+    assert @rpn.int?('100')
+  end
+
+  def test_int_invalid
     refute @rpn.int?('a')
+    refute @rpn.int?('1a')
+    refute @rpn.int?('a1')
     refute @rpn.int?('longer_than_one_character')
   end
 
