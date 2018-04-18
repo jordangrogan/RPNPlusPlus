@@ -30,6 +30,7 @@ class RPNExecutor
       tokens.shift
       print_op(tokens)
     elsif tokens[0] =~ /[A-Za-z]{2,}/
+      # checks for a string that is exactly 2 or more alphabetical characters
       return Error.new("Unknown keyword #{tokens[0]}", 4)
     else
       # If no keyword is used & the first token is not
