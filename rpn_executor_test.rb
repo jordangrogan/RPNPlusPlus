@@ -129,6 +129,7 @@ class RPNExecutorTest < Minitest::Test
   # Equivalence classes:
   # When the input is a letter & only one character -> Return true
   # When the input is >1 character or a number -> Return false
+
   def test_var_valid
     assert @rpn.var?('a')
   end
@@ -142,6 +143,7 @@ class RPNExecutorTest < Minitest::Test
   # Equivalence classes:
   # When the input is an integer -> Return true
   # When the input is not an integer -> Return false
+
   def test_int_valid
     assert @rpn.int?('1')
     assert @rpn.int?('10')
