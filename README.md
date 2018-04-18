@@ -4,3 +4,7 @@ CS 1632 - DELIVERABLE 6: Testing Strategy for RPN++
 
 Jordan Grogan & John Fahnestock  
 Mon/Wed 11am
+
+First, run `bundle install` to install all the necessary Ruby gems.  
+To run the program in REPL mode, run `ruby rpn.rb`.  
+To run the program in file mode, run `ruby rpn.rb YourFile YourFile2...`.
